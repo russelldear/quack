@@ -34,9 +34,9 @@ namespace Echo
                 if (input.Request.Intent.Slots.ContainsKey("station") && !string.IsNullOrWhiteSpace(input.Request.Intent.Slots["station"].Value))
                 {
                     station = input.Request.Intent.Slots["station"].Value;
-
-                    Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
                 }
+
+                Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;

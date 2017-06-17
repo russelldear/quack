@@ -10,7 +10,7 @@ namespace Echo.Test
         [Fact]
         public void Can_get_wellington()
         {
-            var skillRequest = Given_a_request_for_this_station("wellington");
+            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""wellington""");
 
             var skillResponse = When_I_send_it_to_the_function(skillRequest);
 
@@ -20,7 +20,17 @@ namespace Echo.Test
         [Fact]
         public void Can_get_ava()
         {
-            var skillRequest = Given_a_request_for_this_station("ava");
+            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""ava""");
+
+            var skillResponse = When_I_send_it_to_the_function(skillRequest);
+
+            Then_the_response_is_valid(skillResponse);
+        }
+
+        [Fact]
+        public void Can_default_with_no_station()
+        {
+            var skillRequest = Given_a_request_for_this_station("");
 
             var skillResponse = When_I_send_it_to_the_function(skillRequest);
 
@@ -29,7 +39,7 @@ namespace Echo.Test
 
         private SkillRequest Given_a_request_for_this_station(string station)
         {
-            return JsonConvert.DeserializeObject<SkillRequest>(string.Format(Template, "ava"));
+            return JsonConvert.DeserializeObject<SkillRequest>(string.Format(Template, station));
         }
 
         private SkillResponse When_I_send_it_to_the_function(SkillRequest request)
@@ -68,8 +78,7 @@ namespace Echo.Test
       ""name"": ""TrainIntent"",
       ""slots"": {{
         ""station"": {{
-          ""name"": ""station"",
-          ""value"": ""{0}""
+          ""name"": ""station""{0}
         }}
       }}
     }}
