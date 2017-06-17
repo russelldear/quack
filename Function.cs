@@ -8,7 +8,9 @@ using System;
 namespace Echo
 {
     public class Function
-    {        
+    {
+        private const string DefaultStation = "Ava";
+
         public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
         {
             Response response;
@@ -26,7 +28,12 @@ namespace Echo
             {
                 log.LogLine($"Intent Requested {input.Request.Intent.Name}");
 
-                var station = input.Request.Intent.Slots["station"].Value;
+                var station = DefaultStation;
+
+                if (input.Request.Intent.Slots.ContainsKey("station"))
+                {
+                    station = input.Request.Intent.Slots["station"].Value;
+                }
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = $"The requested station is {station}.";
