@@ -9,7 +9,7 @@ namespace Echo
 {
     public class TrainGetter
     {
-        private const string departureFormat = "Next departure from {0} heading to {1} leaves in {2} minutes and {3} seconds.\n";
+        private const string departureFormat = "The next departure from {0} heading to {1} leaves in {2} minutes and {3} seconds.\n";
 
         public static async Task<string> Get(string text = "AVA")
         {
@@ -82,7 +82,8 @@ namespace Echo
                 {"WAIK", "Waikanae"},
                 {"PORI2", "Porirua"},
                 {"JOHN", "Johnsonville"},
-                {"MELL", "Melling"}
+                {"MELL", "Melling"},
+                {"WELL", "Wellington"},
             };
         }
 
@@ -138,8 +139,11 @@ namespace Echo
             var inbound = GetExternalDeparture("Inbound", responseObject["Services"]);
             var outbound = GetExternalDeparture("Outbound", responseObject["Services"]);
 
-            var responseString = string.Format(departureFormat, stop, inbound.Destination, inbound.Minutes, inbound.Seconds);
-            responseString += string.Format(departureFormat, stop, outbound.Destination, outbound.Minutes, outbound.Seconds);
+            var inboundDestination = GetExternalDestination(inbound.Destination);
+            var outboundDestination = GetExternalDestination(outbound.Destination);
+            
+            var responseString = string.Format(departureFormat, stop, inboundDestination, inbound.Minutes, inbound.Seconds);
+            responseString += string.Format(departureFormat, stop, outboundDestination, outbound.Minutes, outbound.Seconds);
 
             return responseString;
         }
@@ -163,6 +167,15 @@ namespace Echo
             }
 
             return null;
+        }
+
+        private static string GetExternalDestination(string destination)
+        {
+            var destinations = GetDestinations();
+
+            var words = destination.Split(' ');
+
+            return destinations[words[0]];
         }
     }
 
