@@ -1,7 +1,7 @@
 using Amazon.Lambda.Core;
 using Slight.Alexa.Framework.Models.Requests;
 using Slight.Alexa.Framework.Models.Responses;
-using System;
+using System.Threading.Tasks;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -15,28 +15,31 @@ namespace Echo
         {
             Response response;
             IOutputSpeech innerResponse = null;
-            var log = context.Logger;
 
             if (input.GetRequestType() == typeof(Slight.Alexa.Framework.Models.Requests.RequestTypes.ILaunchRequest))
             {
-                log.LogLine($"Default LaunchRequest made");
+                LambdaLogger.Log($"Default LaunchRequest made");
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = "Metlink gives you real-time public transport information for Wellington, New Zealand.";
             }
             else if (input.GetRequestType() == typeof(Slight.Alexa.Framework.Models.Requests.RequestTypes.IIntentRequest))
             {
-                log.LogLine($"Intent Requested {input.Request.Intent.Name}");
+                LambdaLogger.Log($"Intent Requested {input.Request.Intent.Name}");
 
                 var station = DefaultStation;
 
-                if (input.Request.Intent.Slots.ContainsKey("station"))
+                var responseText = "";
+
+                if (input.Request.Intent.Slots.ContainsKey("station") && !string.IsNullOrWhiteSpace(input.Request.Intent.Slots["station"].Value))
                 {
                     station = input.Request.Intent.Slots["station"].Value;
+
+                    Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
                 }
 
                 innerResponse = new PlainTextOutputSpeech();
-                (innerResponse as PlainTextOutputSpeech).Text = $"The requested station is {station}.";
+                (innerResponse as PlainTextOutputSpeech).Text = responseText;
             }
 
             response = new Response();
