@@ -30,25 +30,30 @@ namespace Echo
             }
             else if (input.GetRequestType() == typeof(Slight.Alexa.Framework.Models.Requests.RequestTypes.IIntentRequest))
             {
-                LambdaLogger.Log($"Intent Requested {input.Request.Intent.Name}");
+                var intent = input.Request.Intent.Name;
 
-                var station = DefaultStation;
+                LambdaLogger.Log($"Intent Requested {intent}");
 
                 var responseText = "";
+                
+                if (intent == "TrainIntent")
+                {
+                    var station = DefaultStation;
 
-                if (input.Request.Intent.Slots.ContainsKey("station") && !string.IsNullOrWhiteSpace(input.Request.Intent.Slots["station"].Value))
-                {
-                    station = input.Request.Intent.Slots["station"].Value;
-                    LambdaLogger.Log($"Station requested: {station}");
-                }
+                    if (input.Request.Intent.Slots.ContainsKey("station") && !string.IsNullOrWhiteSpace(input.Request.Intent.Slots["station"].Value))
+                    {
+                        station = input.Request.Intent.Slots["station"].Value;
+                        LambdaLogger.Log($"Station requested: {station}");
+                    }
 
-                if (station.ToLower()  == "version")
-                {
-                    responseText = "This is Wellington Trains version 1.0";
-                }
-                else
-                {
-                    Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
+                    if (station.ToLower()  == "version")
+                    {
+                        responseText = "This is Wellington Trains version 1.0";
+                    }
+                    else
+                    {
+                        Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
+                    }
                 }
                 
                 response.ShouldEndSession = true;
@@ -58,7 +63,8 @@ namespace Echo
             }
 
             response.OutputSpeech = innerResponse;
-            SkillResponse skillResponse = new SkillResponse();
+            
+            var skillResponse = new SkillResponse();
             skillResponse.Response = response;
             skillResponse.Version = "1.0";
 
