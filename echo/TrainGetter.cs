@@ -41,7 +41,7 @@ namespace Echo
                     }
                     else
                     {
-                        var errorResponse = "Your message should be in the format 'train ABCD', where ABCD is the first four letters of your stop.";
+                        var errorResponse = "I didn't understand the name of your station. Please try again using the name of a station in the Wellington train network.";
                         return errorResponse;
                     }
                 }
