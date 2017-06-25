@@ -1,4 +1,5 @@
 using Amazon.Lambda.Core;
+using Newtonsoft.Json;
 using Slight.Alexa.Framework.Models.Requests;
 using Slight.Alexa.Framework.Models.Responses;
 using System.Threading.Tasks;
@@ -13,7 +14,9 @@ namespace Echo
 
         public SkillResponse FunctionHandler(SkillRequest input, ILambdaContext context)
         {
-            Response response;
+            LambdaLogger.Log($"SkillRequest input: {JsonConvert.SerializeObject(input)}");
+
+            Response response = new Response();
             IOutputSpeech innerResponse = null;
 
             if (input.GetRequestType() == typeof(Slight.Alexa.Framework.Models.Requests.RequestTypes.ILaunchRequest))
@@ -21,7 +24,9 @@ namespace Echo
                 LambdaLogger.Log($"Default LaunchRequest made");
 
                 innerResponse = new PlainTextOutputSpeech();
-                (innerResponse as PlainTextOutputSpeech).Text = "Metlink gives you real-time public transport information for Wellington, New Zealand.";
+                (innerResponse as PlainTextOutputSpeech).Text = "Wellington Trains gives you real-time public transport information for Wellington, New Zealand. Please say the name of a station on the Wellington train network to find the next departure time.";
+                
+                response.ShouldEndSession = false;
             }
             else if (input.GetRequestType() == typeof(Slight.Alexa.Framework.Models.Requests.RequestTypes.IIntentRequest))
             {
@@ -34,16 +39,24 @@ namespace Echo
                 if (input.Request.Intent.Slots.ContainsKey("station") && !string.IsNullOrWhiteSpace(input.Request.Intent.Slots["station"].Value))
                 {
                     station = input.Request.Intent.Slots["station"].Value;
+                    LambdaLogger.Log($"Station requested: {station}");
                 }
 
-                Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
-
+                if (station.ToLower()  == "version")
+                {
+                    responseText = "This is Wellington Trains version 1.0";
+                }
+                else
+                {
+                    Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
+                }
+                
+                response.ShouldEndSession = true;
+            
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
             }
 
-            response = new Response();
-            response.ShouldEndSession = true;
             response.OutputSpeech = innerResponse;
             SkillResponse skillResponse = new SkillResponse();
             skillResponse.Response = response;

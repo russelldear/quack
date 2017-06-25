@@ -103,7 +103,7 @@ namespace Echo
                 {
                     responseString += string.Format(departureFormat, stop, departure.Destination, departure.Minutes, departure.Seconds);
                 }
-                else
+                else if (destinations[key] != "WELL")
                 {
                     responseString += string.Format("No {0} departures listed.\n", destinations[key]);
                 }

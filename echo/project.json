@@ -14,7 +14,8 @@
         "type": "build",
         "version": "1.5.0"
     },
-    "Slight.Alexa.Core": "1.0.10-beta"
+    "Slight.Alexa.Core": "1.0.10-beta",
+    "Newtonsoft.Json": "9.0.1"
   },
 
   "tools": {
