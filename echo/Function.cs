@@ -24,7 +24,7 @@ namespace Echo
                 LambdaLogger.Log($"Default LaunchRequest made");
 
                 innerResponse = new PlainTextOutputSpeech();
-                (innerResponse as PlainTextOutputSpeech).Text = "Wellington Trains gives you real-time public transport information for Wellington, New Zealand. Please say the name of a station on the Wellington train network to find the next departure time.";
+                (innerResponse as PlainTextOutputSpeech).Text = "Wellington Trains gives you real-time public transport information for Wellington, New Zealand. What station are you departing from?";
                 
                 response.ShouldEndSession = false;
             }
@@ -63,7 +63,7 @@ namespace Echo
             }
 
             response.OutputSpeech = innerResponse;
-            
+
             var skillResponse = new SkillResponse();
             skillResponse.Response = response;
             skillResponse.Version = "1.0";
