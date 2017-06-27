@@ -139,11 +139,19 @@ namespace Echo
             var inbound = GetExternalDeparture("Inbound", responseObject["Services"]);
             var outbound = GetExternalDeparture("Outbound", responseObject["Services"]);
 
-            var inboundDestination = GetExternalDestination(inbound.Destination);
-            var outboundDestination = GetExternalDestination(outbound.Destination);
-            
-            var responseString = string.Format(departureFormat, stop, inboundDestination, inbound.Minutes, inbound.Seconds);
-            responseString += string.Format(departureFormat, stop, outboundDestination, outbound.Minutes, outbound.Seconds);
+            var responseString = "";
+
+            if (!string.IsNullOrWhiteSpace(inbound?.Destination))
+            {
+                var inboundDestination = GetExternalDestination(inbound.Destination);
+                responseString = string.Format(departureFormat, stop, inboundDestination, inbound.Minutes, inbound.Seconds);
+            }
+
+            if (!string.IsNullOrWhiteSpace(outbound?.Destination))
+            {
+                var outboundDestination = GetExternalDestination(outbound.Destination);
+                responseString += string.Format(departureFormat, stop, outboundDestination, outbound.Minutes, outbound.Seconds);
+            }
 
             return responseString;
         }

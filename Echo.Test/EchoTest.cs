@@ -28,6 +28,26 @@ namespace Echo.Test
         }
 
         [Fact]
+        public void Can_get_johnsonville()
+        {
+            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""johnsonville""");
+
+            var skillResponse = When_I_send_it_to_the_function(skillRequest);
+
+            Then_the_response_is_valid(skillResponse);
+        }
+
+        [Fact]
+        public void Can_get_upper_hutt()
+        {
+            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""upper hutt""");
+
+            var skillResponse = When_I_send_it_to_the_function(skillRequest);
+
+            Then_the_response_is_valid(skillResponse);
+        }
+
+        [Fact]
         public void Can_default_with_no_station()
         {
             var skillRequest = Given_a_request_for_this_station("");

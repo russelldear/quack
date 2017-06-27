@@ -54,10 +54,23 @@ namespace Echo
                     {
                         Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
                     }
-                }
                 
-                response.ShouldEndSession = true;
-            
+                    response.ShouldEndSession = true;
+                }
+                else if (intent == "HelpIntent")
+                {
+                    responseText = "You can ask me what time time the next train leaves from your nearest station. For example, try saying \"When's the next train from Wellington Station?\". ";
+                    response.ShouldEndSession = false;
+                }
+                else if (intent == "StopIntent")
+                {
+                    response.ShouldEndSession = true;
+                }
+                else if (intent == "CancelIntent")
+                {
+                    response.ShouldEndSession = true;
+                }
+
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
             }
