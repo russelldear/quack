@@ -57,19 +57,21 @@ namespace Echo
                 
                     response.ShouldEndSession = true;
                 }
-                else if (intent == "HelpIntent")
+                else if (intent == "AMAZON.HelpIntent")
                 {
-                    responseText = "You can ask me what time time the next train leaves from your nearest station. For example, try saying \"When's the next train from Wellington Station?\". ";
+                    responseText = "You can ask me when the next train leaves from your nearest station. What station are you departing from? ";
                     response.ShouldEndSession = false;
                 }
-                else if (intent == "StopIntent")
+                else if (intent == "AMAZON.StopIntent")
                 {
                     response.ShouldEndSession = true;
                 }
-                else if (intent == "CancelIntent")
+                else if (intent == "AMAZON.CancelIntent")
                 {
                     response.ShouldEndSession = true;
                 }
+
+                LambdaLogger.Log($"Response: {responseText} - Session should end: {response.ShouldEndSession}");
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;

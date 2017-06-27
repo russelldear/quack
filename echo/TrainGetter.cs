@@ -9,7 +9,7 @@ namespace Echo
 {
     public class TrainGetter
     {
-        private const string departureFormat = "The next departure from {0} heading to {1} leaves in {2} minutes and {3} seconds.\n";
+        private const string departureFormat = "The next departure from {0} heading to {1} leaves in {2} minutes and {3} seconds. ";
 
         public static async Task<string> Get(string text = "AVA")
         {
@@ -63,6 +63,8 @@ namespace Echo
                 text = "AVA";
             }
 
+            text = text.Replace(" ", "");
+
             if (text.Length > 4)
             {
                 text = text.Substring(0, 4);
@@ -105,7 +107,7 @@ namespace Echo
                 }
                 else if (key != "WELL")
                 {
-                    responseString += string.Format("No {0} departures listed.\n", destinations[key]);
+                    responseString += string.Format("No {0} departures listed. ", destinations[key]);
                 }
             }
 

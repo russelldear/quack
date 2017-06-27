@@ -7,10 +7,47 @@ namespace Echo.Test
 {
     public class EchoTest
     {
-        [Fact]
-        public void Can_get_wellington()
+        [Theory]
+        [InlineData("Upper Hutt")]
+        [InlineData("Wallaceville")]
+        [InlineData("Pukerua Bay")]
+        [InlineData("Trentham")]
+        [InlineData("Heretaunga")]
+        [InlineData("Silverstream")]
+        [InlineData("Plimmerton")]
+        [InlineData("Manor Park")]
+        [InlineData("Mana")]
+        [InlineData("Pomare")]
+        [InlineData("Paremata")]
+        [InlineData("Taita")]
+        [InlineData("Wingate")]
+        [InlineData("Naenae")]
+        [InlineData("Porirua")]
+        [InlineData("Epuni")]
+        [InlineData("Kenepuru")]
+        [InlineData("Waterloo")]
+        [InlineData("Linden")]
+        [InlineData("Woburn")]
+        [InlineData("Tawa")]
+        [InlineData("Melling")]
+        [InlineData("Redwood")]
+        [InlineData("Ava")]
+        [InlineData("Western Hutt")]
+        [InlineData("Takapu Road")]
+        [InlineData("Petone")]
+        [InlineData("Johnsonville")]
+        [InlineData("Raroa")]
+        [InlineData("Khandallah")]
+        [InlineData("Box Hill")]
+        [InlineData("Simla Crescent")]
+        [InlineData("Awarua Street")]
+        [InlineData("Ngaio")]
+        [InlineData("Crofton Downs")]
+        [InlineData("Ngauranga")]
+        [InlineData("Wellington")]
+        public void Can_get_station(string station)
         {
-            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""wellington""");
+            var skillRequest = Given_a_request_for_this_station(string.Format(@", ""value"": ""{0}""", station));
 
             var skillResponse = When_I_send_it_to_the_function(skillRequest);
 
@@ -18,9 +55,9 @@ namespace Echo.Test
         }
 
         [Fact]
-        public void Can_get_ava()
+        public void Can_get_box_hill()
         {
-            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""ava""");
+            var skillRequest = Given_a_request_for_this_station(string.Format(@", ""value"": ""{0}""", "Box Hill"));
 
             var skillResponse = When_I_send_it_to_the_function(skillRequest);
 
@@ -28,19 +65,9 @@ namespace Echo.Test
         }
 
         [Fact]
-        public void Can_get_johnsonville()
+        public void Can_get_ngauranga()
         {
-            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""johnsonville""");
-
-            var skillResponse = When_I_send_it_to_the_function(skillRequest);
-
-            Then_the_response_is_valid(skillResponse);
-        }
-
-        [Fact]
-        public void Can_get_upper_hutt()
-        {
-            var skillRequest = Given_a_request_for_this_station(@", ""value"": ""upper hutt""");
+            var skillRequest = Given_a_request_for_this_station(string.Format(@", ""value"": ""{0}""", "Ngauranga"));
 
             var skillResponse = When_I_send_it_to_the_function(skillRequest);
 
