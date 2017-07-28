@@ -79,6 +79,7 @@ namespace Echo
             {
                 {"UPPE", "Upper Hutt"},
                 {"TAIT2", "Taita"},
+                {"TAIT", "Taita"},
                 {"WAIK", "Waikanae"},
                 {"PORI2", "Porirua"},
                 {"JOHN", "Johnsonville"},
