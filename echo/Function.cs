@@ -54,10 +54,25 @@ namespace Echo
                     {
                         Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
                     }
-                }
                 
-                response.ShouldEndSession = true;
-            
+                    response.ShouldEndSession = true;
+                }
+                else if (intent == "AMAZON.HelpIntent")
+                {
+                    responseText = "You can ask me when the next train leaves from your nearest station. What station are you departing from? ";
+                    response.ShouldEndSession = false;
+                }
+                else if (intent == "AMAZON.StopIntent")
+                {
+                    response.ShouldEndSession = true;
+                }
+                else if (intent == "AMAZON.CancelIntent")
+                {
+                    response.ShouldEndSession = true;
+                }
+
+                LambdaLogger.Log($"Response: {responseText} - Session should end: {response.ShouldEndSession}");
+
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = responseText;
             }
