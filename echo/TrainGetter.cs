@@ -9,7 +9,7 @@ namespace Echo
 {
     public class TrainGetter
     {
-        private const string departureFormat = "The next departure from {0} heading to {1} leaves in {2} minutes and {3} seconds. ";
+        private const string DepartureFormat = "The next departure from {0} heading to {1} leaves in {2} minutes and {3} seconds. ";
 
         public static async Task<string> Get(string text = "AVA")
         {
@@ -28,7 +28,7 @@ namespace Echo
                         var metlinkResponse = await response.Content.ReadAsStringAsync();
                         Console.WriteLine(metlinkResponse);
 
-                        JObject responseObject = JObject.Parse(metlinkResponse);
+                        var responseObject = JObject.Parse(metlinkResponse);
 
                         if (url.EndsWith("WELL"))
                         {
@@ -56,9 +56,9 @@ namespace Echo
 
         private static string GetUrl(string text)
         {
-            var url = "https://www.metlink.org.nz/api/v1/StopDepartures/";
+            const string url = "https://www.metlink.org.nz/api/v1/StopDepartures/";
 
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
                 text = "AVA";
             }
@@ -72,7 +72,7 @@ namespace Echo
 
             var encodedString = System.Uri.EscapeUriString(text).ToUpper();
 
-            return String.Format("{0}{1}", url, encodedString);
+            return string.Format("{0}{1}", url, encodedString);
         }
 
         private static Dictionary<string, string> GetDestinations()
@@ -104,7 +104,7 @@ namespace Echo
 
                 if (departure != null)
                 {
-                    responseString += string.Format(departureFormat, stop, departure.Destination, departure.Minutes, departure.Seconds);
+                    responseString += string.Format(DepartureFormat, stop, departure.Destination, departure.Minutes, departure.Seconds);
                 }
                 else if (key != "WELL")
                 {
@@ -147,13 +147,13 @@ namespace Echo
             if (!string.IsNullOrWhiteSpace(inbound?.Destination))
             {
                 var inboundDestination = GetExternalDestination(inbound.Destination);
-                responseString = string.Format(departureFormat, stop, inboundDestination, inbound.Minutes, inbound.Seconds);
+                responseString = string.Format(DepartureFormat, stop, inboundDestination, inbound.Minutes, inbound.Seconds);
             }
 
             if (!string.IsNullOrWhiteSpace(outbound?.Destination))
             {
                 var outboundDestination = GetExternalDestination(outbound.Destination);
-                responseString += string.Format(departureFormat, stop, outboundDestination, outbound.Minutes, outbound.Seconds);
+                responseString += string.Format(DepartureFormat, stop, outboundDestination, outbound.Minutes, outbound.Seconds);
             }
 
             return responseString;
@@ -171,7 +171,7 @@ namespace Echo
                 return new Departure
                 {
                     Direction = direction,
-                    Destination = service.Value<string>("DestinationStopName"),
+                    Destination = service.Value<string>("DestinationStopID"),
                     Minutes = service.Value<int>("DisplayDepartureSeconds") / 60,
                     Seconds = service.Value<int>("DisplayDepartureSeconds") % 60
                 };

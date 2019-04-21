@@ -1,9 +1,10 @@
+using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Newtonsoft.Json;
 using Slight.Alexa.Framework.Models.Requests;
 using Slight.Alexa.Framework.Models.Responses;
-using System.Threading.Tasks;
 
+// Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
 namespace Echo
@@ -25,7 +26,7 @@ namespace Echo
 
                 innerResponse = new PlainTextOutputSpeech();
                 (innerResponse as PlainTextOutputSpeech).Text = "Wellington Trains gives you real-time public transport information for Wellington, New Zealand. What station are you departing from?";
-                
+
                 response.ShouldEndSession = false;
             }
             else if (input.GetRequestType() == typeof(Slight.Alexa.Framework.Models.Requests.RequestTypes.IIntentRequest))
@@ -35,7 +36,7 @@ namespace Echo
                 LambdaLogger.Log($"Intent Requested {intent}");
 
                 var responseText = "";
-                
+
                 if (intent == "TrainIntent")
                 {
                     var station = DefaultStation;
@@ -46,7 +47,7 @@ namespace Echo
                         LambdaLogger.Log($"Station requested: {station}");
                     }
 
-                    if (station.ToLower()  == "version")
+                    if (station.ToLower() == "version")
                     {
                         responseText = "This is Wellington Trains version 1.0";
                     }
@@ -54,7 +55,7 @@ namespace Echo
                     {
                         Task.Run(async () => responseText = await TrainGetter.Get(station)).Wait();
                     }
-                
+
                     response.ShouldEndSession = true;
                 }
                 else if (intent == "AMAZON.HelpIntent")
