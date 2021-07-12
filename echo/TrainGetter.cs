@@ -15,6 +15,8 @@ namespace Echo
         {
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("x-api-key", "iuoMNXQjzC1PjijgMjKkHhYWPb4ZES2UpaYfgsd0");
+
                 var url = GetUrl(text);
 
                 try
@@ -56,7 +58,7 @@ namespace Echo
 
         private static string GetUrl(string text)
         {
-            var url = "https://www.metlink.org.nz/api/v1/StopDepartures/";
+            var url = "https://api.opendata.metlink.org.nz/v1/stop-predictions?stop_id=";
 
             if (String.IsNullOrEmpty(text))
             {
