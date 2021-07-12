@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Slight.Alexa.Framework.Models.Requests;
 using Slight.Alexa.Framework.Models.Responses;
 using Xunit;
@@ -101,7 +101,7 @@ namespace Echo.Test
             var output = response.Response.OutputSpeech as PlainTextOutputSpeech;
 
             Assert.NotNull(output);
-            Assert.True(output.Text.Contains("The next departure"));
+            Assert.Contains("The next departure", output.Text);
         }
 
         private const string Template = @"{{
